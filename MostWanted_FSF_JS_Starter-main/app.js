@@ -24,7 +24,7 @@ function runSearchAndMenu(people) {
     }
 }
 
-function searchPeopleDataSet(people) {
+function searchSpecificPeopleDataSet(people) {
 
     const id = validatedPrompt(
         'Please enter in what type of search you would like to perform.',
@@ -60,6 +60,8 @@ function searchPeopleDataSet(people) {
     console.log('${info}: ${result}');
 }
 
+
+
 function searchById(people) {
     const idToSearchForString = prompt('Please enter the id of the person you are searching for.');
     const idToSearchForInt = parseInt(idToSearchForString);
@@ -87,14 +89,30 @@ function mainMenu(person, people) {
             // displayPersonInfo(person);
             break;
         case "family":
-            //! TODO
-            // let personFamily = findPersonFamily(person, people);
-            // displayPeople('Family', personFamily);
+            let family =[];
+            if (person.parents.length > 0) {
+                family = family.concat(people.filter(p => person.parents.includes(p.id)));
+            }
+            if (person.currentSpouse) {
+                family.push(people.find(p =>p.id === person.currentSpouse));
+            }
+            const children = people.filter(p => p.parents.includes(person.id));
+            if (children.length > 0) {
+                family = family.concat(children);
+            }
+            displayPeople('Immediate Family', family);
+            
+            
             break;
         case "descendants":
             //! TODO
             // let personDescendants = findPersonDescendants(person, people);
             // displayPeople('Descendants', personDescendants);
+            break;
+        case "trait":
+            const trait = validatedPrompt('please enter a trait to search by:');
+            const traitResults = searchByTrait(trait, people);
+            displayPeople('Please with ${trait}: ${traitResults.length}', traitResults);
             break;
         case "quit":
             return;
