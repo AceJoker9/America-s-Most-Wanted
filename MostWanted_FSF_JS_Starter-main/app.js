@@ -105,9 +105,14 @@ function mainMenu(person, people) {
             
             break;
         case "descendants":
-            //! TODO
-            // let personDescendants = findPersonDescendants(person, people);
-            // displayPeople('Descendants', personDescendants);
+            let personDescendants = findPersonDecendants(person, people);
+            if (personDescendants.length === 0) {
+                alert('${person.firstName} ${person.lastName} has no descendants.');
+            } else {
+                displayPeople('Descendants', personDescendants);
+            }
+            
+            
             break;
         case "trait":
             const trait = validatedPrompt('please enter a trait to search by:');
